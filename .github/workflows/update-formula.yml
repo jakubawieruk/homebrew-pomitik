@@ -1,0 +1,58 @@
+name: Update Formula
+
+on:
+  repository_dispatch:
+    types: [update-formula]
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update formula
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          ARM_SHA="${{ github.event.client_payload.arm_sha256 }}"
+          INTEL_SHA="${{ github.event.client_payload.intel_sha256 }}"
+
+          cat > Formula/pomitik.rb << RUBY
+          class Pomitik < Formula
+            desc "A command-line countdown timer with Pomodoro sessions"
+            homepage "https://github.com/jakubawieruk/pomitik"
+            version "${VERSION}"
+
+            on_macos do
+              on_arm do
+                url "https://github.com/jakubawieruk/pomitik/releases/download/v${VERSION}/pomitik-aarch64-apple-darwin.tar.gz"
+                sha256 "${ARM_SHA}"
+              end
+
+              on_intel do
+                url "https://github.com/jakubawieruk/pomitik/releases/download/v${VERSION}/pomitik-x86_64-apple-darwin.tar.gz"
+                sha256 "${INTEL_SHA}"
+              end
+            end
+
+            def install
+              bin.install "tik"
+            end
+
+            test do
+              assert_match "A command-line countdown timer", shell_output("#{bin}/tik --help")
+            end
+          end
+          RUBY
+
+          sed -i 's/^          //' Formula/pomitik.rb
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/pomitik.rb
+          git commit -m "Update pomitik to ${{ github.event.client_payload.version }}"
+          git push
