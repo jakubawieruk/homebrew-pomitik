@@ -6,20 +6,20 @@ class Pomitik < Formula
   on_macos do
     on_arm do
       url "https://github.com/jakubawieruk/pomitik/releases/download/v0.1.0/pomitik-aarch64-apple-darwin.tar.gz"
-      sha256 "ad6f6db64f74f1d863f6992e518168ad6f2f97093aef46801c921bfb577348fe"
+      sha256 "cc1a7f700dc29cc384eca95694198abcecacbd3cc70ca4703cf7093292566518"
     end
 
     on_intel do
       url "https://github.com/jakubawieruk/pomitik/releases/download/v0.1.0/pomitik-x86_64-apple-darwin.tar.gz"
-      sha256 "2a5601721191a281e7f44a3b652c3e2bb4e7cd246c02a7c35dd09e929b053fc9"
+      sha256 "460c4687fb24c36d3605a1eb42659cc4dcbd2e19c48266d0f257d21d6f8e8a9e"
     end
   end
 
   def install
-    bin.install "pomitik"
+    bin.install "tik"
   end
 
   test do
-    assert_match "A command-line countdown timer", shell_output("#{bin}/pomitik --help")
+    assert_match "A command-line countdown timer", shell_output("#{bin}/tik --help")
   end
 end
