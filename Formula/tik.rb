@@ -6,7 +6,12 @@ class Tik < Formula
   on_macos do
     on_arm do
       url "https://github.com/jakubawieruk/tik/releases/download/v0.1.0/tik-aarch64-apple-darwin.tar.gz"
-      sha256 "cc8d92751b0855d5ea7dcf54e1378d9cedbef59f5c617e9ec6cbb65c2a70cc4d"
+      sha256 "c87743e1b3992dbd2ef1c07fe5d169d90b7b955a9e8890266c26d03e5b014dac"
+    end
+
+    on_intel do
+      url "https://github.com/jakubawieruk/tik/releases/download/v0.1.0/tik-x86_64-apple-darwin.tar.gz"
+      sha256 "598cb305b1290bc73cc9cab6c9c0681543547a195661a9b092736a1622b8b114"
     end
   end
 
